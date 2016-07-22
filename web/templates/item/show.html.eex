@@ -1,0 +1,8 @@
+<h1><%= @item.name %></h1>
+<ul>
+  <li>Description: <%= @item.description %></li>
+  <li>Icon: <img src="<%= icon(@item)%>" ></li>
+  <li>Buy Price: <%= buy_price(@item) %></li>
+  <li>Sell Price: <%= sell_price(@item) %></li>
+  <li>Auctionable: <%= @item.is_auctionable %></li>
+</ul>
