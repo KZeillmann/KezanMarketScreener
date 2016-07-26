@@ -1,4 +1,4 @@
 <div class="jumbotron">
   <h2><%= gettext "Welcome to %{name}", name: "The Kezan Market Screener!" %></h2>
 </div>
-<%= link "Finkle's Lava Dredger", to: "/items/18803" %>
+<%= link "Black Trillium Ore", to: "/items/72094" %>

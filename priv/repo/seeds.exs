@@ -16,13 +16,13 @@ alias KezanMarketScreener.Snapshot
 alias KezanMarketScreener.Auction
 
 Repo.insert! %Item {
-  id: 18803,
-  name: "Finkle's Lava Dredger",
-  description: "Property of Finkle Einhorn, Grandmaster Adventurer",
-  icon: "inv_gizmo_02",
-  buy_price: 474384,
-  sell_price: 94876,
-  is_auctionable: false
+  id: 72094,
+  name: "Black Trillium Ore",
+  description: "",
+  icon: "inv_ore_trilliumblack",
+  buy_price: 0,
+  sell_price: 350,
+  is_auctionable: true
 }
 
 my_date = Ecto.DateTime.cast!(%{ year: 2016, month: 7, day: 22, hour: 23, minute: 23})
