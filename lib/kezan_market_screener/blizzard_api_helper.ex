@@ -55,11 +55,11 @@ defmodule BlizzardAPIHelper do
     |> save_auctions
   end
 
-  # defp save_auctions(auction_data) do
-  #   Logger.debug "Saving auction data"
-  #   IO.inspect auction_data
-  #   Logger.debug "Auction data inspected"
-  # end
+  defp save_auctions(auction_data) do
+    Logger.debug "Saving auction data"
+    IO.inspect auction_data
+    Logger.debug "Auction data inspected"
+  end
 
   # returns all unique items in the dump
   defp retrieve_items_from_dump(auctions) do
