@@ -14,6 +14,8 @@ config :kezan_market_screener, KezanMarketScreener.Endpoint,
   pubsub: [name: KezanMarketScreener.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+ config :kezan_market_screener, ecto_repos: [KezanMarketScreener.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
