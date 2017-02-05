@@ -4,13 +4,13 @@ defmodule KezanMarketScreener.Mixfile do
   def project do
     [app: :kezan_market_screener,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.4.1",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     aliases: aliases(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application.
@@ -37,7 +37,8 @@ defmodule KezanMarketScreener.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:httpoison, "~> 0.9.1"}]
+     {:httpoison, "~> 0.9.1"},
+     {:poison, "~> 2.2.0"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
