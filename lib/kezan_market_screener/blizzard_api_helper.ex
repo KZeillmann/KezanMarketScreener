@@ -29,7 +29,8 @@ defmodule BlizzardAPIHelper do
       save_snapshot_dump(url, modified_date)
     else
       Logger.debug "Auction file is up to date."
-      parse_dump_json(current_file)
+      auction_dump = KezanMarketScreener.Repo.get_by!(KezanMarketScreener.AuctionDump, url: url)
+      parse_dump_json(current_file, auction_dump.id)
     end
   end
 
@@ -40,10 +41,19 @@ defmodule BlizzardAPIHelper do
     filename = "current_auction_#{modified_date}.json"
     File.write(filename, response.body, [:write])
     Logger.debug "Done writing!"
-    parse_dump_json(filename)
+    Logger.debug "Saving dump info to DB"
+    {:ok, timestamp} = modified_date |> DateTime.from_unix(:milliseconds)
+    dump = %KezanMarketScreener.AuctionDump {
+      timestamp: timestamp,
+      url: url,
+      server: @server #TODO: Fix this to have server as param
+    }
+    {:ok, inserted} = KezanMarketScreener.Repo.insert(dump)
+
+    parse_dump_json(filename, inserted.id)
   end
 
-  defp parse_dump_json(filename) do
+  defp parse_dump_json(filename, dump_id) do
     Logger.debug "Parsing auction dump"
     file_contents = File.read!(filename)
     raw_json = Poison.decode!(file_contents)
@@ -52,13 +62,29 @@ defmodule BlizzardAPIHelper do
     |> save_unpersisted_items
 
     raw_json["auctions"]
-    |> save_auctions
+    |> save_auctions(dump_id)
   end
 
-  defp save_auctions(auction_data) do
+  defp save_auctions(auction_data, dump_id) do
     Logger.debug "Saving auction data"
-    IO.inspect auction_data
+    auction_data
+    |> Enum.map(fn(auction) -> to_auction_schema(auction, dump_id) end)
+    |> Enum.each(&save_auction_data/1)
     Logger.debug "Auction data inspected"
+  end
+
+  defp to_auction_schema(map, dump_id) do
+    %KezanMarketScreener.Auction {
+      id: map["auc"],
+      item: map["item"],
+      owner: map["owner"],
+      owner_realm: map["ownerRealm"],
+      bid: map["bid"],
+      buyout: map["buyout"],
+      quantity: map["quantity"],
+      time_left: map["timeLeft"],
+      auction_dump_id: dump_id
+    }
   end
 
   # returns all unique items in the dump
@@ -81,6 +107,11 @@ defmodule BlizzardAPIHelper do
     KezanMarketScreener.Repo.all(from i in "items",
       select: i.id
     )
+  end
+
+  defp save_auction_data(auction) do
+    Logger.debug "Saving auction with id #{auction.id}"
+    KezanMarketScreener.Repo.insert(auction, on_conflict: :nothing)
   end
 
   defp save_item_data(item) do

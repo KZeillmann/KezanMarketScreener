@@ -5,6 +5,7 @@ defmodule KezanMarketScreener.Repo.Migrations.AddAuctionDump do
     create table(:auction_dumps) do
       add :timestamp, :utc_datetime
       add :server, :string
+      add :url, :string
       timestamps()
     end
 

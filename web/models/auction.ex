@@ -9,5 +9,6 @@ defmodule KezanMarketScreener.Auction do
     field :buyout, :integer
     field :quantity, :integer
     field :time_left, :string
+    belongs_to :auction_dump, KezanMarketScreener.AuctionDump
   end
 end
